@@ -3,7 +3,7 @@ const path = require("path")
 // require("dotenv").config()
 
 module.exports = defineConfig({
-  outputDir: path.resolve(__dirname, "../server/public"),
+  // outputDir: path.resolve(__dirname, "../server/public"),
   transpileDependencies: true,
   configureWebpack: {
     devServer: {
