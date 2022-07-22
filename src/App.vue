@@ -1,8 +1,11 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="!errorMessage">
     <Header :length="length"/>
     <AddItem @add-todo="addItem"/>
     <Items :todo="todo.data" @update-todo="updateTodo" @delete="deleteTodo"/>
+  </div>
+  <div class="container" v-else>
+    <h1 style="background: #efefef">Error: {{errorMessage}}</h1>
   </div>
 </template>
 
@@ -23,34 +26,57 @@ export default {
   data(){
     return{
       todo: [],
-      length: ""
+      length: "",
+      error: false,
+      errorMessage : "",
     }
   },
   methods:{
     async addItem(todo){
-      await axios.post("api/todo/", todo);
-      const fetched = await axios.get("api/todo/");
-      this.todo = fetched.data;
-      this.length = this.todo.data.length
+
+
+      try{
+        await axios.post("api/todo/", todo);
+        const fetched = await axios.get("api/todo/");
+        this.todo = fetched.data;
+        this.length = this.todo.data.length
+      }catch (e) {
+        this.errorMessage = e.message
+      }
+
+
     },
     async updateTodo(updated, id){
-      await axios.patch("api/todo/" + id, updated);
-      const fetched = await axios.get("api/todo/");
-      this.todo = fetched.data;
-      this.length = this.todo.data.length
+      try{
+        await axios.patch("api/todo/" + id, updated);
+        const fetched = await axios.get("api/todo/");
+        this.todo = fetched.data;
+        this.length = this.todo.data.length
+      }catch (e) {
+        this.errorMessage = e.message
+      }
     },
-    async deleteTodo(id, i) {
-      await axios.delete("api/todo/" + id);
-      const fetched = await axios.get("api/todo/");
-      this.todo = fetched.data;
-      this.length = this.todo.data.length
+    async deleteTodo(id) {
+      try{
+        await axios.delete("api/todo/" + id);
+        const fetched = await axios.get("api/todo/");
+        this.todo = fetched.data;
+        this.length = this.todo.data.length
+      }catch (e) {
+        this.errorMessage = e.message
+      }
     },
   },
 
   async created() {
-    const response = await axios.get("api/todo/");
-    this.todo = response.data;
-    this.length = this.todo.data.length
+    try{
+      const response = await axios.get("api/todo/");
+      this.todo = response.data;
+      this.length = this.todo.data.length
+    }catch (e) {
+      this.errorMessage = e.message
+    }
+
   }
 }
 </script>
