@@ -5,7 +5,7 @@
     <Items :todo="todo.data" @update-todo="updateTodo" @delete="deleteTodo"/>
   </div>
   <div class="container" v-else>
-    <h1 style="background: #efefef">Error: {{errorMessage}}</h1>
+    <h1 style="color: #efefef">Error: {{errorMessage}}</h1>
   </div>
 </template>
 
