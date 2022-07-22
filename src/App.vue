@@ -70,7 +70,7 @@ export default {
 
   async created() {
     try{
-      const response = await axios.get("api/todo/");
+      const response = await axios.get("api/todo");
       this.todo = response.data;
       this.length = this.todo.data.length
     }catch (e) {
